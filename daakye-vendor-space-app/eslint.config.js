@@ -2,12 +2,19 @@
 const { defineConfig } = require("eslint/config");
 const expoConfig = require("eslint-config-expo/flat");
 const eslintPluginPrettierRecommended = require("eslint-plugin-prettier/recommended");
+const reactNativePlugin = require("eslint-plugin-react-native");
 
 module.exports = defineConfig([
   expoConfig,
   eslintPluginPrettierRecommended,
 
   {
+    plugins: {
+      "react-native": reactNativePlugin,
+    },
+    rules: {
+      "react-native/no-unused-styles": "warn",
+    },
     // Ignore build artifacts, Expo files, and native code directories.
     // This keeps linting fast as the project grows (these folders can be huge).
     // Husky + lint-staged runs ESLint on staged files; these ignores ensure

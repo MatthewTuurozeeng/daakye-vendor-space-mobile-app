@@ -1,81 +1,34 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Alert, TouchableOpacity } from "react-native";
-import {theme} from "./theme";
+import { StyleSheet, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { theme } from "./theme";
+import { ShoppingList } from "./components/ShoppingList";
 
-// simple React Native app that displays a welcome message and a delete button. The delete button currently just logs "Pressed" to the console when pressed. The app uses a custom theme for colors.
 export default function App() {
-  const handleDeletePress = () => {
-    Alert.alert("Delete button pressed", "You have pressed the delete button."
-      , [
-        { text: "OK", onPress: () => console.log("OK Pressed"),
-          style: "destructive"
-        },
-        { text: "Cancel", onPress: () => console.log("Cancel Pressed"), 
-          style: "cancel" },
-      ]  
-    );
-  };
-
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => {
-          console.log("Pressed");
-          handleDeletePress();
-        }}
-        style={styles.button}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.buttonText}>Delete</Text>
-      </TouchableOpacity>
-
-      <View style={styles.itemContainer}>
-        <Text style={styles.ItemText}>Hello Daakye Vendor space!</Text>
-
-      </View>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Welcome to Daakye Vendor Space!</Text>
+      <ShoppingList name="Coffee" isComleted/>
+      <ShoppingList name="Bread" />
+      <ShoppingList name="Tea" isComleted/>
+      <ShoppingList name="Ice" />
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+// validate that all styles are used in order to avoid unused style warnings
+const styles = StyleSheet.create({ 
   container: {
     flex: 1,
-    // backgroundColor: "#fff",
     backgroundColor: theme.colorWhite,
-    borderBottomColor: "#1a759f", 
-    paddingHorizontal: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-
+    paddingTop: 200,
+    paddingBottom: 16,
+    paddingHorizontal: 12,
+    gap: 16,
   },
-  itemContainer: {
-    // backgroundColor: "#1a759f",
-    backgroundColor: theme.colorCerulean,
-    padding: 8,
-    borderRadius: 6,
-    alignItems: "center",
-    },
-  ItemText: {
-    fontSize: 18, 
-    fontWeight: "200",
-    color: "#fff",
-  }, 
-  button: {
-    // backgroundColor: "red",
-    backgroundColor: theme.colorBlack,
-    padding: 8,
-    borderRadius: 6,
-    alignItems: "center",
-
+  title: {
+    fontSize: 18,
+    fontWeight: "800",
   },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    textTransform: "uppercase",
-    letterSpacing: 1,
-    
-  },
-
 });
+
+
