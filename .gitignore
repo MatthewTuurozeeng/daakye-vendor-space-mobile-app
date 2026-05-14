@@ -1,0 +1,3 @@
+# Repo-level ignores
+.DS_Store
+docs/
