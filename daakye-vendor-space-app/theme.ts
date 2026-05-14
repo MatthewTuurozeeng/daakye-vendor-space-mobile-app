@@ -4,6 +4,7 @@ export const theme = {
     colorBlack: "#333",
     colorLightGray: "#e6e6e6",
     colorGray: "#999",
+    coloRed: "#ff0000",
 //   colors: {
 //     primary: "#1a759f",
 //     secondary: "#e6e6e6",
