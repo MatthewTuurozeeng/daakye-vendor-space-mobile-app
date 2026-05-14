@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Run linting only on staged files before commit to keep checks fast.
+cd "$(dirname "$0")/.."
+npx lint-staged
