@@ -1,17 +1,20 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { theme } from "./theme";
-import { ShoppingList } from "./components/ShoppingList";
+import { theme } from "../theme";
+import { ShoppingList } from "../components/ShoppingList";
+import { Link } from "expo-router";
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Welcome to Daakye Vendor Space!</Text>
+    <View style={styles.container}>
+      <Link 
+        href="/counter" 
+        style={{textAlign:"center", marginBottom: 18, fontSize:24}} >Go to Counter</Link>
       <ShoppingList name="Coffee" isComleted/>
       <ShoppingList name="Bread" />
       <ShoppingList name="Tea" isComleted/>
       <ShoppingList name="Ice" />
-    </SafeAreaView>
+    </View>
   );
 }
 
