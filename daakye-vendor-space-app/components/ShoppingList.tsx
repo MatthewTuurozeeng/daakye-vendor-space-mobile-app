@@ -1,12 +1,21 @@
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Pressable } from "react-native";
 import { theme } from "../theme";
-import AntDesign from '@expo/vector-icons/AntDesign';
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 type ShoppingListProps = {
+  id: string;
   name: string;
-  isComleted?: boolean;
+  isCompleted?: boolean;
+  onDelete?: (id: string) => void;
+  onToggleComplete?: (id: string) => void;
 };
-export function ShoppingList({ name, isComleted }: ShoppingListProps) {
+export function ShoppingList({
+  id,
+  name,
+  isCompleted,
+  onDelete,
+  onToggleComplete,
+}: ShoppingListProps) {
   const handleDeletePress = () => {
     Alert.alert(
       "Delete button pressed",
@@ -14,7 +23,7 @@ export function ShoppingList({ name, isComleted }: ShoppingListProps) {
       [
         {
           text: "OK",
-          onPress: () => console.log("OK Pressed"),
+          onPress: () => onDelete?.(id),
           style: "destructive",
         },
         {
@@ -27,12 +36,29 @@ export function ShoppingList({ name, isComleted }: ShoppingListProps) {
   };
 
   return (
-    <View style={[styles.itemContainer, isComleted? styles.completedContainer:  undefined,]}>
-      <Text style={styles.ItemText}>{name}</Text>
-      <TouchableOpacity>
-      <AntDesign name="close-circle" size={24} color={isComleted? theme.colorGray:  theme.coloRed}/>
+    <Pressable
+      style={[
+        styles.itemContainer,
+        isCompleted ? styles.completedContainer : undefined,
+      ]}
+      onPress={() => onToggleComplete?.(id)}
+   >
+      <Text
+        style={[
+          styles.ItemText,
+          isCompleted ? styles.completedText : undefined,
+        ]}
+      >
+        {name}
+      </Text>
+      <TouchableOpacity onPress={handleDeletePress} activeOpacity={0.8}>
+        <AntDesign
+          name="close-circle"
+          size={24}
+          color={isCompleted ? theme.colorGray : theme.coloRed}
+        />
       </TouchableOpacity>
-    </View>
+    </Pressable>
   );
 }
 
@@ -52,13 +78,12 @@ const styles = StyleSheet.create({
     fontWeight: "200",
     // color: "#fff",
   },
-  
+
   completedContainer: {
     backgroundColor: theme.colorLightGray,
     borderBottomColor: theme.colorLightGray,
-
   },
-  
+
   completedText: {
     textDecorationLine: "line-through",
     textDecorationColor: theme.colorGray,
