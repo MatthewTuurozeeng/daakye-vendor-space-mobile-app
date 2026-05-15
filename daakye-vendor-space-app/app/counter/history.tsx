@@ -1,7 +1,6 @@
 import { Text, View, StyleSheet} from "react-native";
-import { useRouter } from "expo-router";
 
-export default function CounterScreen() {
+export default function HistoryScreen() {
  
   return (
     <View style={styles.container}>
