@@ -6,6 +6,7 @@ import { getFromStorage, saveToStorage } from "../utils/Storage";
 import * as Haptics from "expo-haptics";
 
 
+
 const storageKey = "shopping-list";
 
 type ShoppingListItemType = {
