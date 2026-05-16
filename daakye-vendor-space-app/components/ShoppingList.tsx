@@ -61,7 +61,7 @@ export function ShoppingList({
         <AntDesign
           name="close-circle"
           size={24}
-          color={isCompleted ? theme.colorGray : theme.coloRed}
+          color={isCompleted ? theme.colorGray : theme.colorRed}
         />
       </TouchableOpacity>
     </Pressable>

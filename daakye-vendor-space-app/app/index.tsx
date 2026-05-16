@@ -2,7 +2,7 @@ import { StyleSheet, TextInput, FlatList , LayoutAnimation} from "react-native";
 import { theme } from "../theme";
 import { ShoppingList } from "../components/ShoppingList";
 import { useEffect, useState } from "react";
-import { getFromStorage, saveToStorage } from "../utils/Storage";
+import { getFromStorage, saveToStorage } from "../utils/storage";
 import * as Haptics from "expo-haptics";
 
 
