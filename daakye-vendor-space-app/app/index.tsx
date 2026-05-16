@@ -1,7 +1,11 @@
 import { StyleSheet, TextInput, FlatList } from "react-native";
 import { theme } from "../theme";
 import { ShoppingList } from "../components/ShoppingList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getFromStorage, saveToStorage } from "../utils/Storage";
+
+
+const storageKey = "shopping-list";
 
 type ShoppingListItemType = {
   id: string;
@@ -58,6 +62,17 @@ export default function App() {
     initialList,
   );
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const storedList = await getFromStorage(storageKey);
+      if (storedList) {
+        setShoppingList(storedList);
+      }
+    };
+    fetchData();
+  }, []);
+
+
   const handleSubmit = () => {
     const trimmed = value.trim();
     if (!trimmed) return;
@@ -72,13 +87,14 @@ export default function App() {
     ];
     setShoppingList(newShoppingList);
     setValue("");
+    saveToStorage(storageKey, newShoppingList);
   };
 
   // delete item from shopping list by id and show an alert to confirm deletion
-  const handleDeleteItem = (id: string) => {
-    setShoppingList((currentItems) =>
-      currentItems.filter((item) => item.id !== id),
-    );
+  const handleDelete = (id: string) => {
+    const newShoppingList = shoppingList.filter((item) => item.id !== id);
+    setShoppingList(newShoppingList);
+    saveToStorage(storageKey, newShoppingList);
   };
 
   const handleToggleComplete = (id: string) => {
@@ -94,6 +110,7 @@ export default function App() {
       }
       return item;
     });
+    saveToStorage(storageKey, newShoppingList);
     setShoppingList(newShoppingList);
   };
 
@@ -143,7 +160,7 @@ export default function App() {
         <ShoppingList
           id={item.id}
           name={item.name}
-          onDelete={handleDeleteItem}
+          onDelete={handleDelete}
           onToggleComplete={() => handleToggleComplete(item.id)}
           isCompleted={Boolean (item.completedAtTimeStamp)}
         />
