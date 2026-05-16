@@ -7,6 +7,7 @@ type ShoppingListItemType = {
   id: string;
   name: string;
   completedAtTimeStamp?: number;
+  lastUpdatedTimestamp: number;
 };
 
 type ListHeaderProps = {
@@ -32,63 +33,99 @@ const initialList: ShoppingListItemType[] = [
   {
     id: "1",
     name: "Coffee",
+    lastUpdatedTimestamp: Date.now(),
   },
   {
     id: "2",
     name: "Bread",
+    lastUpdatedTimestamp: Date.now(),
   },
   {
     id: "3",
     name: "Tea",
+    lastUpdatedTimestamp: Date.now(),
   },
   {
     id: "4",
     name: "Ice",
+    lastUpdatedTimestamp: Date.now(),
   },
 ];
 
 export default function App() {
   const [value, setValue] = useState("");
-  const [shoppingList, setshoppingList] =
-    useState<ShoppingListItemType[]>(initialList);
+  const [shoppingList, setShoppingList] = useState<ShoppingListItemType[]>(
+    initialList,
+  );
+
   const handleSubmit = () => {
-    if (value) {
-      const newShoppingList: ShoppingListItemType[] = [
-        { id: new Date().toTimeString(), name: value },
-        ...shoppingList,
-      ];
-      setshoppingList(newShoppingList);
-      setValue("");
-    }
+    const trimmed = value.trim();
+    if (!trimmed) return;
+
+    const newShoppingList: ShoppingListItemType[] = [
+      {
+        id: new Date().toISOString(),
+        name: trimmed,
+        lastUpdatedTimestamp: Date.now(),
+      },
+      ...shoppingList,
+    ];
+    setShoppingList(newShoppingList);
+    setValue("");
   };
 
   // delete item from shopping list by id and show an alert to confirm deletion
   const handleDeleteItem = (id: string) => {
-    setshoppingList((currentItems) =>
+    setShoppingList((currentItems) =>
       currentItems.filter((item) => item.id !== id),
     );
   };
 
-  const handleToggleComplete = (id: string) => 
-  {
+  const handleToggleComplete = (id: string) => {
     const newShoppingList = shoppingList.map((item) => {
       if (item.id === id) {
         return {
           ...item,
-          completedAtTimeStamp: item.completedAtTimeStamp ? undefined : Date.now(),
+          completedAtTimeStamp: item.completedAtTimeStamp
+            ? undefined
+            : Date.now(),
+          lastUpdatedTimestamp: Date.now(),
         };
       }
       return item;
     });
-    setshoppingList(newShoppingList);
+    setShoppingList(newShoppingList);
+  };
 
-  
+  function orderShoppingList(list: ShoppingListItemType[]) {
+    return [...list].sort((item1, item2) => {
+      if (item1.completedAtTimeStamp && item2.completedAtTimeStamp) {
+        return (
+          (item2.completedAtTimeStamp as number) -
+          (item1.completedAtTimeStamp as number)
+        );
+      }
+
+      if (item1.completedAtTimeStamp && !item2.completedAtTimeStamp) {
+        return 1;
+      }
+
+      if (!item1.completedAtTimeStamp && item2.completedAtTimeStamp) {
+        return -1;
+      }
+
+      if (!item1.completedAtTimeStamp && !item2.completedAtTimeStamp) {
+        return item2.lastUpdatedTimestamp - item1.lastUpdatedTimestamp;
+      }
+
+      return 0;
+    });
   }
 
   return (
     // use ScrollView when the list is small and FlatList when the list is large to optimize performance
     <FlatList
-      data={shoppingList}
+      data= {orderShoppingList(shoppingList)}
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
       keyboardShouldPersistTaps="handled"
@@ -134,6 +171,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     fontSize: 18,
     backgroundColor: theme.colorWhite,
+    
   },
   contentContainer: {
     paddingBottom: 24,

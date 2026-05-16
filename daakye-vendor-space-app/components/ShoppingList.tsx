@@ -43,7 +43,10 @@ export function ShoppingList({
       ]}
       onPress={() => onToggleComplete?.(id)}
    >
+    <View style={styles.row}>
+      <AntDesign name={isCompleted? "check": "ci-circle"} size={24} color={isCompleted? theme.colorGray: theme.colorCerulean} />
       <Text
+        numberOfLines={1} // This will ensure that the text does not overflow and will be truncated with an ellipsis if it's too long to fit in one line.
         style={[
           styles.ItemText,
           isCompleted ? styles.completedText : undefined,
@@ -51,6 +54,7 @@ export function ShoppingList({
       >
         {name}
       </Text>
+    </View>
       <TouchableOpacity onPress={handleDeletePress} activeOpacity={0.8}>
         <AntDesign
           name="close-circle"
@@ -76,6 +80,7 @@ const styles = StyleSheet.create({
   ItemText: {
     fontSize: 18,
     fontWeight: "200",
+    flex:1
     // color: "#fff",
   },
 
@@ -88,5 +93,11 @@ const styles = StyleSheet.create({
     textDecorationLine: "line-through",
     textDecorationColor: theme.colorGray,
     color: theme.colorLightGray,
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    flex:1
   },
 });
