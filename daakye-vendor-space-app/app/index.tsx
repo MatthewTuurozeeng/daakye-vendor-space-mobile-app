@@ -1,8 +1,9 @@
-import { StyleSheet, TextInput, FlatList } from "react-native";
+import { StyleSheet, TextInput, FlatList , LayoutAnimation} from "react-native";
 import { theme } from "../theme";
 import { ShoppingList } from "../components/ShoppingList";
 import { useEffect, useState } from "react";
 import { getFromStorage, saveToStorage } from "../utils/Storage";
+import * as Haptics from "expo-haptics";
 
 
 const storageKey = "shopping-list";
@@ -66,6 +67,7 @@ export default function App() {
     const fetchData = async () => {
       const storedList = await getFromStorage(storageKey);
       if (storedList) {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setShoppingList(storedList);
       }
     };
@@ -85,6 +87,7 @@ export default function App() {
       },
       ...shoppingList,
     ];
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setShoppingList(newShoppingList);
     setValue("");
     saveToStorage(storageKey, newShoppingList);
@@ -93,13 +96,21 @@ export default function App() {
   // delete item from shopping list by id and show an alert to confirm deletion
   const handleDelete = (id: string) => {
     const newShoppingList = shoppingList.filter((item) => item.id !== id);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setShoppingList(newShoppingList);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     saveToStorage(storageKey, newShoppingList);
   };
 
   const handleToggleComplete = (id: string) => {
     const newShoppingList = shoppingList.map((item) => {
       if (item.id === id) {
+        if (item.completedAtTimeStamp) {
+           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        } 
+        else {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        }
         return {
           ...item,
           completedAtTimeStamp: item.completedAtTimeStamp
