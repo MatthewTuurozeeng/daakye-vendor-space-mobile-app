@@ -12,7 +12,7 @@ This repository contains my work from the **React Native Fundamentals** course o
 - Push notification registration helper
 
 ## Course Context
-This project is the result of completing the React Native Fundamentals course and is no longer the original “Daakye” concept. The app serves as a learning sandbox rather than a production product.
+This project is the result of completing the React Native Fundamentals course.  The app serves as a learning sandbox rather than a production product.
 
 ## Tech Stack
 - React Native
@@ -42,5 +42,4 @@ Linting is wired to run fast on staged files using Husky + lint-staged.
 npm run lint
 ```
 
-## Notes
-The course notes live in `docs/React_Native_v3_Kadi_Kraman_Notes.md`.
+
